@@ -19,6 +19,7 @@ library(webshot2)
 t.ovatum <- read.csv("data/t.ovatum.csv")
 v.adunca <- read.csv("data/v.adunca.csv")
 c.uniflora <- read.csv("data/c.uniflora.csv")
+a.caudatum <- read.csv("data/a.caudatum.csv")
 
 # Processing of Dataframes so that they match each other
 ## Very Elaborate Column Mapping ####
@@ -117,6 +118,31 @@ c.uniflora_column_mapping <- c(
   "Month.Collected" = "Month",
   "spec.epithet" = "Species"
 )
+
+
+a.caudatum_column_mapping <- c(
+  "X" = "X",
+  "Herbarium" = "Herbarium",
+  "Accession" = "Accession",
+  "Genus" = "Genus",
+  "Species" = "Species",
+  "Phenology" = "Phenology",
+  "Day" = "Day",
+  "Month" = "Month",
+  "Year" = "Year",
+  "DOY" = "DOY",
+  "Country" = "Country",
+  "State_Province" = "State_Province",
+  "County" = "County",
+  "Elevation_m" = "Elevation_m",
+  "Latitude" = "Latitude",
+  "Longitude" = "Longitude",
+  "Mean_spring_T" = "Annual_Spring_T",
+  "Historic_spring_T" = "Normal_Spring_T",
+  "Total_spring_p" = "Annual_Prec_Spring",
+  "Historic_spring_p" = "Normal_Prec_Spring",
+  "Spring_temp_anomaly" = "Spring_T_Anomaly"
+)
 #####
 ## Use Reverse Mapping to Match Column Names
 for (i in seq_along(colnames(v.adunca))) {
@@ -131,23 +157,41 @@ for (i in seq_along(colnames(c.uniflora))) {
     colnames(c.uniflora)[i] <- c.uniflora_column_mapping[[colname]]
   }
 }
-# Missing lydias data
-
+for (i in seq_along(colnames(a.caudatum))) {
+  colname <- colnames(a.caudatum)[i]
+  if (colname %in% names(a.caudatum_column_mapping)) {
+    colnames(a.caudatum)[i] <- a.caudatum_column_mapping[[colname]]
+  }
+}
 # Selecting for relevent data
 ## Joining datasets into total df
-total.dataframe <- bind_rows(t.ovatum, v.adunca, c.uniflora, .id = "source")
+total.dataframe <- bind_rows(t.ovatum, v.adunca, c.uniflora, a.caudatum, .id = "source")
+
+# Adding Month_str column
+month_names <- c("January", "February", "March", "April", "May", "June", 
+                 "July", "August", "September", "October", "November", "December")
+month_order <- c("January", "February", "March", "April", "May", "June", 
+                 "July", "August", "September", "October", "November", "December")
+# Add a new column "Month_str" to the dataframe with month names
+total.dataframe$Month_str <- month_names[total.dataframe$Month]
+total.dataframe$Month_str <- factor(total.dataframe$Month_str, levels = month_order)
+
+# Adding a Mean_DOY column
+total.dataframe$Mean_DOY <- mean(total.dataframe$DOY)
 
 ## Creating a list of all the columns that every data set should have
 column.list <- c("X", "Herbarium", "Accession", "Genus", "Species", "Phenology", "Day", "Month", "Year", "DOY", "Country", "State_Province", "County", "Elevation_m", "Latitude", "Longitude", "Month_str", "Mean_DOY", "Mean_Tave_Spring", "Mean_PPT_Spring", "Tave_Spring", "PPT_Spring", "Spring_T_Anomaly", "Mean_Tave01", "Mean_Tave02", "Mean_Tave03", "Mean_Tave04", "Mean_Tave05", "Mean_Tave06", "Mean_Tave07", "Mean_Tave08", "Mean_Tave09", "Mean_Tave10", "Mean_Tave11", "Mean_Tave12", "Mean_PPT01", "Mean_PPT02", "Mean_PPT03", "Mean_PPT04", "Mean_PPT05", "Mean_PPT06", "Mean_PPT07", "Mean_PPT08", "Mean_PPT09","Mean_PPT10", "Mean_PPT11", "Mean_PPT12", "Tave01", "Tave02", "Tave03", "Tave04", "Tave05", "Tave06", "Tave07", "Tave08", "Tave09", "Tave10", "Tave11", "Tave12", "PPT01", "PPT02", "PPT03", "PPT04", "PPT05", "PPT06", "PPT07", "PPT08", "PPT09", "PPT10", "PPT11", "PPT12")
 
 ## Selecting for the columns
 group.data <- total.dataframe %>%
-  select(all_of(column.list))
+  select(all_of(column.list)) %>%
+  filter(Species != "")
 
 ## Recoding phenology
 group.data$Phenology <- ifelse(grepl("Fruit", group.data$Phenology, ignore.case = TRUE), "Fruiting", group.data$Phenology)
 group.data$Phenology <- ifelse(grepl("Flower", group.data$Phenology, ignore.case = TRUE), "Flowering", group.data$Phenology)
 group.data$Phenology <- ifelse(grepl("Vegetative", group.data$Phenology, ignore.case = TRUE), "Vegetative", group.data$Phenology)
+
 
 # Extracting Sensitivity values for each species
 ## create quick linear models for each
@@ -174,9 +218,12 @@ latitude_summary <- bind_rows(summary_list, .id = "Species")
 # Step 2: Fit linear models for each species and extract coefficients
 lm_coefficients_list <- list()
 # Split the data by species and fit linear models for each species
+group.data$Species <- as.character(group.data$Species)
 unique_species <- unique(group.data$Species)
+
 for (species in unique_species) {
-  subset_data <- group.data[group.data$Species == species, ]
+  subset_data <- group.data[group.data$Species == species, ] %>%
+    filter(Phenology == "Flowering")
   lm_model <- lm(DOY ~ Spring_T_Anomaly, data = subset_data)
   coefficients <- coef(lm_model)
   lm_summary <- data.frame(
