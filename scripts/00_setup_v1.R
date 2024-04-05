@@ -16,9 +16,6 @@ t.ovatum <- read.csv("data/t.ovatum.csv")
 v.adunca <- read.csv("data/v.adunca.csv")
 c.uniflora <- read.csv("data/c.uniflora.csv")
 
-colnames(v.adunca)
-colnames(t.ovatum)
-
 # Processing of Dataframes so that they match each other
 ## Very Elaborate Column Mapping ####
 # mapping between column names in v.adunca and t.ovatum
@@ -148,7 +145,8 @@ group.data$Phenology <- ifelse(grepl("Fruit", group.data$Phenology, ignore.case 
 group.data$Phenology <- ifelse(grepl("Flower", group.data$Phenology, ignore.case = TRUE), "Flowering", group.data$Phenology)
 group.data$Phenology <- ifelse(grepl("Vegetative", group.data$Phenology, ignore.case = TRUE), "Vegetative", group.data$Phenology)
 
-# Extracting sensitivity values for each species
-
+# Extracting Sensitivity values for each species
+## create quick linear models for each
+# Create a new data frame with our 4 "points" with associated sensitivities and longitude mean, max, and mins
 # 
 
