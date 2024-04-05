@@ -148,5 +148,47 @@ group.data$Phenology <- ifelse(grepl("Vegetative", group.data$Phenology, ignore.
 # Extracting Sensitivity values for each species
 ## create quick linear models for each
 # Create a new data frame with our 4 "points" with associated sensitivities and longitude mean, max, and mins
-# 
+group.data$Species <- as.factor(group.data$Species)
+# Step 1: Calculate the mean, min, and max "longitude" for each species
+      # tried to use group_by, and summarize but it just didnt work for some reason
+summary_list <- list()
+# Split the data by species and calculate summary statistics for each species
+unique_species <- unique(group.data$Species)
+for (species in unique_species) {
+  subset_data <- group.data[group.data$Species == species, ]
+  summary_stats <- subset_data %>%
+    summarise(mean_longitude = mean(Longitude, na.rm = TRUE),
+              max_longitude = max(Longitude, na.rm = TRUE),
+              min_longitude = min(Longitude, na.rm = TRUE))
+  summary_list[[species]] <- summary_stats
+}
+
+# Combine the results into a single dataframe
+longitude_summary <- bind_rows(summary_list, .id = "Species")
+
+# Step 2: Fit linear models for each species and extract coefficients
+lm_coefficients_list <- list()
+# Split the data by species and fit linear models for each species
+unique_species <- unique(group.data$Species)
+for (species in unique_species) {
+  subset_data <- group.data[group.data$Species == species, ]
+  lm_model <- lm(Longitude ~ DOY, data = subset_data)
+  coefficients <- coef(lm_model)
+  lm_summary <- data.frame(
+    Species = species,
+    intercept = coefficients[1],
+    slope = coefficients[2]
+  )
+  lm_coefficients_list[[species]] <- lm_summary
+}
+
+# Combine the results into a single dataframe
+lm_coefficients <- bind_rows(lm_coefficients_list)
+
+
+# Step 3: Create a summary dataframe
+analysis.data <- merge(longitude_summary, lm_coefficients, by = "Species")
+analysis.data <- analysis.data %>%
+  mutate(sensitivity = slope) %>%
+  select(-c("slope"))
 
