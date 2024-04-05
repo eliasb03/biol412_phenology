@@ -3,15 +3,94 @@
 # Elias Bowman
 # BIOL 412
 # 
-# THE BELOW CODE RN IS FROM ELIAS INDIVIDUAL SPECIES ANALYSIS AND IS NOT RIGHT
-# I"M LEAVING IT BECAUSE IT MIGHT BE HELPFUL LATER, FEEL FREE TO DELETE
-#
-#
+# 
 #=======================
-library(ggplot2)
-# Histograms ####
-# creating a series of histograms, one for each relevant variable in T.ovatum.phenology
-# list of variables to create histograms for
+# analysis.data - a 4 observation dataframe with latitude summaries and sensitivities 
+# group.data - a large dataframe with all of our group data bound together
+
+# Analysis for analysis.data  ####
+    #Linear models relating Latitude summaries to sensitivities
+## Sensitivity vs Mean Latitude ####
+mean.lat.lm <- lm(sensitivity ~ mean_latitude, data = analysis.data)
+summary(mean.lat.lm)
+
+# Create a scatterplot with points and the linear model
+mean.lat.plot <- ggplot(analysis.data, aes(x = mean_latitude, y = sensitivity)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Mean Latitude vs. Sensitivity",
+       x = "Mean Latitude",
+       y = "Sensitivity") +
+  theme_minimal()
+## Sensitivity vs Min Latitude ####
+min.lat.lm <- lm(sensitivity ~ min_latitude, data = analysis.data)
+summary(min.lat.lm)
+
+# Create a scatterplot with points and the linear model
+min.lat.plot <- ggplot(analysis.data, aes(x = min_latitude, y = sensitivity)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Min Latitude vs. Sensitivity",
+       x = "Min Latitude",
+       y = "Sensitivity") +
+  theme_minimal()
+## Sensitivity vs Max Latitude ####
+max.lat.lm <- lm(sensitivity ~ max_latitude, data = analysis.data)
+summary(max.lat.lm)
+
+# Create a scatterplot with points and the linear model
+max.lat.plot <- ggplot(analysis.data, aes(x = max_latitude, y = sensitivity)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Max Latitude vs. Sensitivity",
+       x = "Max Latitude",
+       y = "Sensitivity") +
+  theme_minimal()
+
+## Sensitivity vs Latitudinal Range ####
+range.lat.lm <- lm(sensitivity ~ latitude_range, data = analysis.data)
+summary(range.lat.lm)
+
+# Create a scatterplot with points and the linear model
+range.lat.plot <- ggplot(analysis.data, aes(x = latitude_range, y = sensitivity)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Latitudinal Range vs. Sensitivity",
+       x = "Latitudinal Range",
+       y = "Sensitivity") +
+  theme_minimal()
+
+## Saving Plots ####
+grid_plot <- plot_grid(mean.lat.plot, max.lat.plot, min.lat.plot, range.lat.plot,
+                       label_size = 15, label_fontface = "bold")
+ggsave("figures/mean.latitude.png", plot = mean.lat.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/min.latitude.png", plot = min.lat.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/max.latitude.png", plot = max.lat.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/range.latitude.png", plot = range.lat.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/linear.models.png", plot = grid_plot, bg = "white", width = 10, height = 6, units = "in")
+
+## Saving Models ####
+# Extract coefficients from each linear model
+lm_coef_mean <- tidy(mean.lat.lm)
+lm_coef_max <- tidy(max.lat.lm)
+lm_coef_min <- tidy(min.lat.lm)
+lm_coefs_range <- tidy(range.lat.lm)
+
+# Combine the coefficients into a single dataframe
+all_lm_coef <- bind_rows(lm_coef_mean, lm_coef_max, lm_coef_min, lm_coefs_range)
+kable_table <- kable(all_lm_coef, format = "markdown")
+html_table <- kable_styling(kable_table)
+# Totally failed to save or format this table nicely, just did it manually
+
+
+
+# Plan for group.data ####
+## Compare mean, min, and max latitude
+### Box plot chart comparing latitude values of different species 
+
+## analyze distributions of other variables
+### Histograms ####
+### list of variables to create histograms for
 variables <-
   c("Elevation_m", "DOY", "Month", "Month_str", "Year", "County", "Herbarium", "PPT_Spring", "Tave_Spring", "Spring_T_Anomaly", "Latitude")
 
