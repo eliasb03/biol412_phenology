@@ -21,7 +21,7 @@ mean.lat.plot <- ggplot(analysis.data, aes(x = mean_latitude, y = sensitivity)) 
   labs(title = "Scatterplot of Mean Latitude vs. Sensitivity",
        x = "Mean Latitude",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 ## Sensitivity vs Min Latitude ####
 min.lat.lm <- lm(sensitivity ~ min_latitude, data = analysis.data)
 summary(min.lat.lm)
@@ -33,7 +33,7 @@ min.lat.plot <- ggplot(analysis.data, aes(x = min_latitude, y = sensitivity)) +
   labs(title = "Scatterplot of Min Latitude vs. Sensitivity",
        x = "Min Latitude",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 ## Sensitivity vs Max Latitude ####
 max.lat.lm <- lm(sensitivity ~ max_latitude, data = analysis.data)
 summary(max.lat.lm)
@@ -45,7 +45,7 @@ max.lat.plot <- ggplot(analysis.data, aes(x = max_latitude, y = sensitivity)) +
   labs(title = "Scatterplot of Max Latitude vs. Sensitivity",
        x = "Max Latitude",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
 ## Sensitivity vs Latitudinal Range ####
 range.lat.lm <- lm(sensitivity ~ latitude_range, data = analysis.data)
@@ -58,7 +58,7 @@ range.lat.plot <- ggplot(analysis.data, aes(x = latitude_range, y = sensitivity)
   labs(title = "Scatterplot of Latitudinal Range vs. Sensitivity",
        x = "Latitudinal Range",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
 ## Sensitivity vs Mean Elevation ####
 mean.el.lm <- lm(sensitivity ~ mean_elevation, data = analysis.data)
@@ -71,7 +71,7 @@ mean.el.plot <- ggplot(analysis.data, aes(x = mean_elevation, y = sensitivity)) 
   labs(title = "Scatterplot of Mean Elevation vs. Sensitivity",
        x = "Mean Elevation",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
 ## Sensitivity vs Max Elevation ####
 max.el.lm <- lm(sensitivity ~ max_elevation, data = analysis.data)
@@ -84,7 +84,7 @@ max.el.plot <- ggplot(analysis.data, aes(x = max_elevation, y = sensitivity)) +
   labs(title = "Scatterplot of Max Elevation vs. Sensitivity",
        x = "Max Elevation",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
 ## Sensitivity vs Min Elevation ####
 min.el.lm <- lm(sensitivity ~ min_elevation, data = analysis.data)
@@ -97,7 +97,7 @@ min.el.plot <- ggplot(analysis.data, aes(x = min_elevation, y = sensitivity)) +
   labs(title = "Scatterplot of Min Elevation vs. Sensitivity",
        x = "Min Elevation",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
 ## Sensitivity vs Elevation Range ####
 range.el.lm <- lm(sensitivity ~ elevation_range, data = analysis.data)
@@ -110,7 +110,7 @@ range.el.plot <- ggplot(analysis.data, aes(x = elevation_range, y = sensitivity)
   labs(title = "Scatterplot of Elevational Range vs. Sensitivity",
        x = "Elevation Range",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
 ## Saving Plots ####
 grid_plot_latitude <- plot_grid(mean.lat.plot, max.lat.plot, min.lat.plot, range.lat.plot,
@@ -284,7 +284,7 @@ for (variable in variables) {
 
 # Scatterplot ####
 ## Mean Annual Temp (for all groups, coloured) vs Year
-MAT.year.lm <- lm(Tave_Spring ~ Year, data = group.data)
+MAT.year.lm <- lm(Tave_Spring ~ Year + Species, data = group.data)
 summary(MAT.year.lm)
 
 # Create a scatterplot with points and the linear model
@@ -294,201 +294,444 @@ MAT.year.plot <- ggplot(group.data, aes(x = Year, y = Tave_Spring)) +
   labs(title = "Scatterplot of Mean Spring Temperature vs. Year",
        x = "Year",
        y = "Mean Spring Temperature (degrees)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
 ## Mean Precipation (for all groups, coloured) vs Year
-MPPT.year.lm <- lm(PPT_Spring ~ Year, data = group.data)
+MPPT.year.lm <- lm(PPT_Spring ~ Year + Species, data = group.data)
 summary(MPPT.year.lm)
 
-MAT.year.plot <- ggplot(group.data, aes(x = Year, y = PPT_Spring, color = Species)) +
+MPPT.year.plot <- ggplot(group.data, aes(x = Year, y = PPT_Spring)) +
   geom_point(aes(color = Species)) +
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
   labs(title = "Scatterplot of Mean Spring Precipitation vs. Year",
        x = "Year",
        y = "Mean Spring Temperature (degrees)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
 ## Spring Anomaly vs Year
-STA.year.lm <- lm(Spring_T_Anomaly ~ Year, data = group.data)
+STA.year.lm <- lm(Spring_T_Anomaly ~ Year + Species, data = group.data)
 summary(STA.year.lm)
 
-anomaly.year.plot <- ggplot(group.data, aes(x = Year, y = Spring_T_Anomaly, color = Species)) +
+anomaly.year.plot <- ggplot(group.data, aes(x = Year, y = Spring_T_Anomaly)) +
   geom_point(aes(color = Species)) +
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
   labs(title = "Scatterplot of Spring Temperature Anomaly vs. Year",
        x = "Year",
        y = "Spring Temperature Anomaly (degrees from historic)") +
-  theme_minimal()
+  theme_minimal(base_size = 20)
 
-## LM of DOY over mean latitude and range
+# Saving Plots
+ggsave("figures/MAT.year.png", plot = MAT.year.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/MPPT.year.png", plot = MPPT.year.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/anomaly.year.png", plot = anomaly.year.plot, bg = "white", width = 10, height = 6, units = "in")
 
-## LM of DOY over mean elevation and range
+## Saving Models ####
+# Extract coefficients from each linear model
+lm_MAT_coef <- tidy(MAT.year.lm)
+lm_MPPT_coef <- tidy(MPPT.year.lm)
+lm_STA_coef <- tidy(STA.year.lm)
+
+# Combine the coefficients into a single dataframe
+MAT_lm_coef <- lm_MAT_coef
+MAT_kable_table <- kable(MAT_lm_coef, format = "markdown")
+MATp_html_table <- kable_styling(MAT_kable_table)
+
+PPT_lm_coef <- lm_MPPT_coef
+PPT_kable_table <- kable(PPT_lm_coef, format = "markdown")
+PPT_html_table <- kable_styling(PPT_kable_table)
+
+STA_lm_coef <- lm_STA_coef
+STA_kable_table <- kable(STA_lm_coef, format = "markdown")
+STA_html_table <- kable_styling(STA_kable_table)
+
+## LM of DOY over latitude and range
+plot_list <- list()
+# Loop through each unique species
+for(species in unique(group.data$Species)) {
+  # Subset data for the current species
+  species_data <- subset(group.data, Species == species)
+  
+  # Fit linear model
+  model <- lm(DOY ~ Latitude, data = species_data)
+  
+  # Print model summary
+  print(summary(model))
+  
+  # Create plot
+  plot <- ggplot(species_data, aes(x = Latitude, y = DOY)) +
+    geom_point() +
+    geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+    labs(title = paste("Scatterplot of Day of Year vs. Latitude for", unique(species_data$Genus), species),
+         x = "Latitude",
+         y = "Day of Year") +
+    theme_minimal() 
+  
+  # Add plot to list
+  plot_list[[length(plot_list) + 1]] <- plot
+}
+
+# Combine plots into a single cowplot
+combined_plot <- cowplot::plot_grid(plotlist = plot_list, ncol = 2)
+
+# Save the combined plot
+filename_combined <- "figures/doy_latitude_plots.png"
+ggsave(filename_combined, combined_plot, width = 12, height = 8)
+
+## LM of DOY over elevation and range
+plot_list <- list()
+# Loop through each unique species
+for(species in unique(group.data$Species)) {
+  # Subset data for the current species
+  species_data <- subset(group.data, Species == species)
+  
+  # Fit linear model
+  model <- lm(DOY ~ Elevation_m, data = species_data)
+  
+  # Print model summary
+  print(summary(model))
+  
+  # Create plot
+  plot <- ggplot(species_data, aes(x = Elevation_m, y = DOY)) +
+    geom_point() +
+    geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+    labs(title = paste("Scatterplot of Day of Year vs. Elevation for", unique(species_data$Genus), species),
+         x = "Elevation (m)",
+         y = "Day of Year") +
+    theme_minimal() 
+  
+  # Add plot to list
+  plot_list[[length(plot_list) + 1]] <- plot
+}
+
+# Combine plots into a single cowplot
+combined_plot <- cowplot::plot_grid(plotlist = plot_list, ncol = 2)
+
+# Save the combined plot
+filename_combined <- "figures/doy_elevation_plots.png"
+ggsave(filename_combined, combined_plot, width = 12, height = 8)
+
+# Saving Linear Models ####
+# Function to generate formatted output for linear models
+generate_lm_output <- function(model) {
+  # Extract formula
+  formula_text <- deparse(formula(model))
+  
+  # Extract model coefficients
+  coef_names <- names(coef(model))
+  coef_values <- coef(model)
+  
+  # Extract p-values
+  p_values <- summary(model)$coefficients[, "Pr(>|t|)"]
+  
+  # Extract F-statistics and R-squared
+  f_statistic <- summary(model)$fstatistic[1]
+  r_squared <- summary(model)$r.squared
+  
+  # Create output text for coefficients and p-values
+  coef_output <- paste("Coefficients:\n")
+  for (i in seq_along(coef_names)) {
+    coef_output <- paste(coef_output, paste(coef_names[i], ":", coef_values[i], "\n", sep = ""), sep = "")
+  }
+  
+  pval_output <- paste("P-values:\n")
+  for (i in seq_along(coef_names)) {
+    pval_output <- paste(pval_output, paste(coef_names[i], ":", p_values[i], "\n", sep = ""), sep = "")
+  }
+  
+  # Combine output text
+  output_text <- paste("Formula:", formula_text, "\n\n", 
+                       coef_output, "\n\n", 
+                       pval_output, "\n\n", 
+                       "F-statistic:", f_statistic, "\n", 
+                       "R-squared:", r_squared)
+  
+  return(output_text)
+}
+
+# Function to save model output as PNG
+save_lm_output_as_png <- function(model, filename) {
+  lm_results <- generate_lm_output(model)
+  png(filename, width = 800, height = 600, units = "px")
+  plot.new()
+  text(0.5, 0.5, lm_results, cex = 1.2, family = "mono")
+  dev.off()
+}
+
+# Create a folder called "models" if it doesn't exist
+if (!file.exists("models")) {
+  dir.create("models")
+}
+
+# Example list of linear models
+list_of_models <- list(mean.lat.lm, min.lat.lm, max.lat.lm, range.lat.lm, mean.el.lm, max.el.lm, min.el.lm, range.el.lm, MAT.year.lm, MPPT.year.lm, anomaly.year.lm)
+
+# Loop through each model, generate output, and save as PNG in the "models" folder
+for (i in seq_along(list_of_models)) {
+  filename <- paste("models/lm_result_", i, ".png", sep = "")
+  save_lm_output_as_png(list_of_models[[i]], filename)
+}
 
 
-# ############ Old work from elias' file might be helpful later #################
-# # Some Preliminary Scatter Plots
-# # Scatterplot of Day of Year vs. Year with linear regression line and annotations
-# day_year_plot <- ggplot(T.ovatum.phenology, aes(x = Year, y = DOY)) +
-#   geom_point() +
-#   geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add linear regression line
-#   labs(
-#     title = "Year Collected vs. Day of Year Collected",
-#     x = "Year",
-#     y = "Day of Year"
-#   ) +
-#   theme_minimal() +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$DOY) - 0.1 * diff(range(T.ovatum.phenology$DOY)),
-#     label = paste("R^2 =", round(summary(lm(DOY ~ Year, data = T.ovatum.phenology))$r.squared, 5))
-#   ) +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$DOY) - 0.15 * diff(range(T.ovatum.phenology$DOY)),
-#     label = paste("p =", round(summary(lm(DOY ~ Year, data = T.ovatum.phenology))$coef[2, 4], 5))
-#   ) +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$DOY) - 0.2 * diff(range(T.ovatum.phenology$DOY)),
-#     label = paste("y =", round(coef(lm(DOY ~ Year, data = T.ovatum.phenology))[1], 2), "+",
-#                   round(coef(lm(DOY ~ Year, data = T.ovatum.phenology))[2], 2), "x")
-#   )
-# 
-# # Scatterplot of Collection Date vs. Elevation with linear regression line and annotations
-# date_elevation_plot <- ggplot(T.ovatum.phenology, aes(x = DOY, y = Elevation_m)) +
-#   geom_point() +
-#   geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add linear regression line
-#   labs(
-#     title = "Elevation vs. Collection Date",
-#     x = "Collection Date",
-#     y = "Elevation (m)"
-#   ) +
-#   theme_minimal() +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$DOY) + 0.1 * diff(range(T.ovatum.phenology$DOY)),
-#     y = max(T.ovatum.phenology$Elevation_m) - 0.1 * diff(range(T.ovatum.phenology$Elevation_m)),
-#     label = paste("R^2 =", round(summary(lm(Elevation_m ~ DOY, data = T.ovatum.phenology))$r.squared, 5))
-#   ) +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$DOY) + 0.1 * diff(range(T.ovatum.phenology$DOY)),
-#     y = max(T.ovatum.phenology$Elevation_m) - 0.15 * diff(range(T.ovatum.phenology$Elevation_m)),
-#     label = paste("p =", round(summary(lm(Elevation_m ~ DOY, data = T.ovatum.phenology))$coef[2, 4], 20))
-#   ) +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$DOY) + 0.1 * diff(range(T.ovatum.phenology$DOY)),
-#     y = max(T.ovatum.phenology$Elevation_m) - 0.2 * diff(range(T.ovatum.phenology$Elevation_m)),
-#     label = paste("y =", round(coef(lm(Elevation_m ~ DOY, data = T.ovatum.phenology))[1], 2), "+",
-#                   round(coef(lm(Elevation_m ~ DOY, data = T.ovatum.phenology))[2], 2), "x")
-#   )
-# 
-# # Scatterplot of Elevation vs. Year with linear regression line and annotations
-# elevation_year_plot <- ggplot(T.ovatum.phenology, aes(x = Year, y = Elevation_m)) +
-#   geom_point() +
-#   geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add linear regression line
-#   labs(
-#     title = "Elevation vs. Year Collected",
-#     y = "Elevation (m)",
-#     x = "Year Collected"
-#   ) +
-#   theme_minimal() +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$Elevation_m) - 0.1 * diff(range(T.ovatum.phenology$Elevation_m)),
-#     label = paste("R^2 =", round(summary(lm(Elevation_m ~ Year, data = T.ovatum.phenology))$r.squared, 5))
-#   ) +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$Elevation_m) - 0.15 * diff(range(T.ovatum.phenology$Elevation_m)),
-#     label = paste("p =", round(summary(lm(Elevation_m ~ Year, data = T.ovatum.phenology))$coef[2, 4], 5))
-#   ) +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$Elevation_m) - 0.2 * diff(range(T.ovatum.phenology$Elevation_m)),
-#     label = paste("y =", round(coef(lm(Elevation_m ~ Year, data = T.ovatum.phenology))[1], 2), "+",
-#                   round(coef(lm(Elevation_m ~ Year, data = T.ovatum.phenology))[2], 2), "x")
-#   )
-# 
-# # Scatterplot of Mean Spring Temperature vs. Year with linear regression line and annotations
-# spring_temp_year_plot <- ggplot(T.ovatum.phenology, aes(x = Year, y = Tave_Spring)) +
-#   geom_point() +
-#   geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add linear regression line
-#   labs(
-#     title = "Mean Spring Temperature vs. Year",
-#     y = "Mean Spring Temperature",
-#     x = "Year"
-#   ) +
-#   theme_minimal() +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$Tave_Spring) - 0.1 * diff(range(T.ovatum.phenology$Tave_Spring)),
-#     label = paste("R^2 =", round(summary(lm(Tave_Spring ~ Year, data = T.ovatum.phenology))$r.squared, 5))
-#   ) +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$Tave_Spring) - 0.15 * diff(range(T.ovatum.phenology$Tave_Spring)),
-#     label = paste("p =", round(summary(lm(Tave_Spring ~ Year, data = T.ovatum.phenology))$coef[2, 4], 5))
-#   ) +
-#   annotate(
-#     "text", x = min(T.ovatum.phenology$Year) + 0.1 * diff(range(T.ovatum.phenology$Year)),
-#     y = max(T.ovatum.phenology$Tave_Spring) - 0.2 * diff(range(T.ovatum.phenology$Tave_Spring)),
-#     label = paste("y =", round(coef(lm(Tave_Spring ~ Year, data = T.ovatum.phenology))[1], 2), "+",
-#                   round(coef(lm(Tave_Spring ~ Year, data = T.ovatum.phenology))[2], 2), "x")
-#   )
-# 
-# # Save scatterplots
-# ggsave("figures/day_year_scatterplot.png", plot = day_year_plot, bg = "white", width = 10, height = 6, units = "in")
-# ggsave("figures/date_elevation_scatterplot.png", plot = date_elevation_plot, bg = "white", width = 10, height = 6, units = "in")
-# ggsave("figures/elevation_year_scatterplot.png", plot = elevation_year_plot, bg = "white", width = 10, height = 6, units = "in")
-# ggsave("figures/spring_temp_year_scatterplot.png", plot = spring_temp_year_plot, bg = "white", width = 10, height = 6, units = "in")
-# 
-# 
-# 
-# # Temperature Sensitivity
-# T.ovatum.flowering <- T.ovatum.phenology %>%
-#   filter(Phenology == "Flowering")
-# 
-# write.csv(T.ovatum.flowering, "data/processed/t.ovatum.csv")
-# 
-# # Fit linear regression model with reversed relationship
-# sensitivty_model <- lm(DOY ~ Spring_T_Anomaly, data = T.ovatum.flowering)
-# 
-# # Get coefficient, p-value, and R-squared value
-# coef <- coef(sensitivty_model)[2]
-# p_value <- summary(sensitivty_model)$coefficients[2, 4]
-# r_squared <- summary(sensitivty_model)$r.squared
-# 
-# # Create plot with reversed relationship
-# spring_temp_anomaly_doy_plot <- ggplot(T.ovatum.flowering, aes(x = Spring_T_Anomaly, y = DOY)) +
-#   geom_point() +
-#   geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add linear regression line
-#   annotate("text", x = min(T.ovatum.flowering$Spring_T_Anomaly) + 1, y = max(T.ovatum.flowering$DOY) - 15,
-#            label = paste("Slope =", round(coef, 2), "\nP-value =", round(p_value, 3), "\nR-squared =", round(r_squared, 3))) +  # Add annotation for slope, p-value, and R-squared
-#   labs(
-#     title = "T. ovatum Sensitivity: Day of Year Flowering Plants Collected vs. Spring Temperature Anomaly",
-#     x = "Spring Temperature Anomaly",
-#     y = "Day of Year Flowering Plants Collected"
-#   ) +
-#   theme_minimal()
-# 
-# # Save the plot with annotations
-# ggsave("figures/spring_temp_anomaly_doy_plot.png", plot = spring_temp_anomaly_doy_plot, bg = "white", width = 10, height = 6, units = "in")
-# 
-# 
-# # Quick Map Work
-# # Install and load the necessary packages
-# library(leaflet)
-# library(mapview)
-# 
-# # Create a leaflet map
-# map <- leaflet(data = T.ovatum.phenology) %>%
-#   addTiles() %>%
-#   addMarkers(~Longitude, ~Latitude, popup = ~paste("Longitude:", Longitude, "<br>", "Latitude:", Latitude))
-# 
-# # Save the map as a PNG file
-# mapshot(map, file = "figures/map_output.png", width = 800, height = 600)
-# 
-# # Creating a Table for Means
-# library(kableExtra)
-# library(webshot)
-# 
 
+
+# Scatterplots - trendlines grouped by species 
+## Mean Annual Temp (for all groups, coloured) vs Year
+# List to store linear model results
+lm_results <- list()
+
+# Loop through each unique species
+unique_species <- unique(group.data$Species)
+for (species in unique_species) {
+  # Create linear model
+  lm_name <- paste("MAT.year.", species, sep = "")
+  lm_model <- lm(Tave_Spring ~ Year, data = filter(group.data, Species == species))
+  
+  # Store linear model result
+  lm_results[[lm_name]] <- lm_model
+}
+
+
+# Data frame to store model information
+model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficients = character(),
+  P_value = numeric(),
+  Intercept = numeric(),
+  stringsAsFactors = FALSE,
+  row.names = NULL
+)
+
+# Populate model information
+for (i in seq_along(lm_results)) {
+  model_name <- (names(lm_results))[i]
+  model <- lm_results[[i]]
+  
+  model_info <- rbind(model_info, data.frame(
+    Model = model_name,
+    Formula = as.character(formula(model)),
+    Coefficients = paste(coef(model), collapse = ", "),
+    P_value = summary(model)$coefficients[2, "Pr(>|t|)"],
+    Intercept = coef(model)[1]
+  ))
+}
+
+unique_models <- unique(model_info$Model)
+merged_model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficient = character(),
+  Intercept = character(),
+  P_value = numeric(),
+  stringsAsFactors = FALSE
+)
+
+for (model_name in unique_models) {
+  subset_model_info <- subset(model_info, Model == model_name)
+  merged_formula <- paste(unique(subset_model_info$Formula), collapse = " ")
+  merged_coefficients <- unique(subset_model_info$Coefficients)
+  merged_p_value <- unique(subset_model_info$P_value)
+  merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)  # Extracting intercept
+  merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)  # Extracting coefficient
+  merged_formula <- gsub("^~ ", "", merged_formula)  # Remove leading ~
+  merged_model_info <- rbind(merged_model_info, data.frame(
+    Model = model_name,
+    Formula = merged_formula,
+    Coefficient = merged_coefficient,
+    Intercept = merged_intercept,
+    P_value = merged_p_value
+  ))
+}
+
+
+results <- merged_model_info
+
+knitr::kable(results, format = "markdown")
+writeLines(kable(results, format = "markdown"), "temp_model_results.md")
+
+
+# Create a scatterplot with points and the linear model
+MAT.year.plot.spp <- ggplot(group.data, aes(x = Year, y = Tave_Spring, color = Species)) +
+  #geom_point(alpha = 0.3, size = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
+  labs(x = "Year",
+       y = "Mean Spring Temperature (degrees)") +
+  theme_minimal(base_size = 20)
+
+
+## Mean Precipation (for all groups, coloured) vs Year
+# MPPT.year.lm <- lm(PPT_Spring ~ Year + Species, data = group.data)
+# summary(MPPT.year.lm)
+
+# List to store linear model results
+lm_results <- list()
+
+# Loop through each unique species
+unique_species <- unique(group.data$Species)
+for (species in unique_species) {
+  # Create linear model
+  lm_name <- paste("MAT.year.", species, sep = "")
+  lm_model <- lm(PPT_Spring ~ Year, data = filter(group.data, Species == species))
+  
+  # Store linear model result
+  lm_results[[lm_name]] <- lm_model
+}
+
+
+# Data frame to store model information
+model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficients = character(),
+  P_value = numeric(),
+  Intercept = numeric(),
+  stringsAsFactors = FALSE,
+  row.names = NULL
+)
+
+# Populate model information
+for (i in seq_along(lm_results)) {
+  model_name <- (names(lm_results))[i]
+  model <- lm_results[[i]]
+  
+  model_info <- rbind(model_info, data.frame(
+    Model = model_name,
+    Formula = as.character(formula(model)),
+    Coefficients = paste(coef(model), collapse = ", "),
+    P_value = summary(model)$coefficients[2, "Pr(>|t|)"],
+    Intercept = coef(model)[1]
+  ))
+}
+
+unique_models <- unique(model_info$Model)
+merged_model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficient = character(),
+  Intercept = character(),
+  P_value = numeric(),
+  stringsAsFactors = FALSE
+)
+
+for (model_name in unique_models) {
+  subset_model_info <- subset(model_info, Model == model_name)
+  merged_formula <- paste(unique(subset_model_info$Formula), collapse = " ")
+  merged_coefficients <- unique(subset_model_info$Coefficients)
+  merged_p_value <- unique(subset_model_info$P_value)
+  merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)  # Extracting intercept
+  merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)  # Extracting coefficient
+  merged_formula <- gsub("^~ ", "", merged_formula)  # Remove leading ~
+  merged_model_info <- rbind(merged_model_info, data.frame(
+    Model = model_name,
+    Formula = merged_formula,
+    Coefficient = merged_coefficient,
+    Intercept = merged_intercept,
+    P_value = merged_p_value
+  ))
+}
+
+
+results <- merged_model_info
+
+knitr::kable(results, format = "markdown")
+writeLines(kable(results, format = "markdown"), "precip_model_results.md")
+
+
+MPPT.year.plot.spp <- ggplot(group.data, aes(x = Year, y = PPT_Spring, color = Species)) +
+  #geom_point(alpha = 0.45, size = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
+  labs(x = "Year",
+       y = "Mean Precipitation Temperature (degrees)") +
+  theme_minimal(base_size = 20)
+
+
+## Spring Anomaly vs Year
+# anomaly.year.lm <- lm(Spring_T_Anomaly ~ Year + Species, data = group.data)
+# summary(STA.year.lm)
+
+# List to store linear model results
+lm_results <- list()
+
+# Loop through each unique species
+unique_species <- unique(group.data$Species)
+for (species in unique_species) {
+  # Create linear model
+  lm_name <- paste("MAT.year.", species, sep = "")
+  lm_model <- lm(Spring_T_Anomaly ~ Year, data = filter(group.data, Species == species))
+  
+  # Store linear model result
+  lm_results[[lm_name]] <- lm_model
+}
+
+
+# Data frame to store model information
+model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficients = character(),
+  P_value = numeric(),
+  Intercept = numeric(),
+  stringsAsFactors = FALSE,
+  row.names = NULL
+)
+
+# Populate model information
+for (i in seq_along(lm_results)) {
+  model_name <- (names(lm_results))[i]
+  model <- lm_results[[i]]
+  
+  model_info <- rbind(model_info, data.frame(
+    Model = model_name,
+    Formula = as.character(formula(model)),
+    Coefficients = paste(coef(model), collapse = ", "),
+    P_value = summary(model)$coefficients[2, "Pr(>|t|)"],
+    Intercept = coef(model)[1]
+  ))
+}
+
+unique_models <- unique(model_info$Model)
+merged_model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficient = character(),
+  Intercept = character(),
+  P_value = numeric(),
+  stringsAsFactors = FALSE
+)
+
+for (model_name in unique_models) {
+  subset_model_info <- subset(model_info, Model == model_name)
+  merged_formula <- paste(unique(subset_model_info$Formula), collapse = " ")
+  merged_coefficients <- unique(subset_model_info$Coefficients)
+  merged_p_value <- unique(subset_model_info$P_value)
+  merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)  # Extracting intercept
+  merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)  # Extracting coefficient
+  merged_formula <- gsub("^~ ", "", merged_formula)  # Remove leading ~
+  merged_model_info <- rbind(merged_model_info, data.frame(
+    Model = model_name,
+    Formula = merged_formula,
+    Coefficient = merged_coefficient,
+    Intercept = merged_intercept,
+    P_value = merged_p_value
+  ))
+}
+
+
+results <- merged_model_info
+
+knitr::kable(results, format = "markdown")
+
+writeLines(kable(results, format = "markdown"), "anamoly_model_results.md")
+
+
+anomaly.year.plot.spp <- ggplot(group.data, aes(x = Year, y = Spring_T_Anomaly, color = Species)) +
+  #geom_point(alpha = 0.45, size = 0.5) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
+  labs(title = "Scatterplot of Spring Temperature Anomaly vs. Year",
+       x = "Year",
+       y = "Spring Temperature Anomaly (degrees from historic)") +
+  theme_minimal(base_size = 20)
+
+ggsave("figures/mat.year.spp.png", plot = MAT.year.plot.spp, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/anomaly.year.spp.png", plot = anomaly.year.plot.spp, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/precip.year.spp.png", plot = MPPT.year.plot.spp, bg = "white", width = 10, height = 6, units = "in")
