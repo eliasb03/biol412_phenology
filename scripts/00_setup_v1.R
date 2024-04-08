@@ -137,10 +137,10 @@ a.caudatum_column_mapping <- c(
   "Elevation_m" = "Elevation_m",
   "Latitude" = "Latitude",
   "Longitude" = "Longitude",
-  "Mean_spring_T" = "Annual_Spring_T",
-  "Historic_spring_T" = "Normal_Spring_T",
-  "Total_spring_p" = "Annual_Prec_Spring",
-  "Historic_spring_p" = "Normal_Prec_Spring",
+  "Mean_spring_T" = "Tave_Spring",
+  "Historic_spring_T" = "Mean_Tave_Spring",
+  "Total_spring_p" = "PPT_Spring",
+  "Historic_spring_p" = "Mean_PPT_Spring",
   "Spring_temp_anomaly" = "Spring_T_Anomaly"
 )
 #####
