@@ -20,7 +20,7 @@ mean.lat.plot <- ggplot(analysis.data, aes(x = mean_latitude, y = sensitivity)) 
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
   labs(title = "Scatterplot of Mean Latitude vs. Sensitivity",
        x = "Mean Latitude",
-       y = "Sensitivity") +
+       y = "Sensitivity (day/degree Celsius)") +
   theme_minimal()
 ## Sensitivity vs Min Latitude ####
 min.lat.lm <- lm(sensitivity ~ min_latitude, data = analysis.data)
@@ -32,7 +32,7 @@ min.lat.plot <- ggplot(analysis.data, aes(x = min_latitude, y = sensitivity)) +
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
   labs(title = "Scatterplot of Min Latitude vs. Sensitivity",
        x = "Min Latitude",
-       y = "Sensitivity") +
+       y = "Sensitivity (day/degree Celsius)") +
   theme_minimal()
 ## Sensitivity vs Max Latitude ####
 max.lat.lm <- lm(sensitivity ~ max_latitude, data = analysis.data)
@@ -44,7 +44,7 @@ max.lat.plot <- ggplot(analysis.data, aes(x = max_latitude, y = sensitivity)) +
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
   labs(title = "Scatterplot of Max Latitude vs. Sensitivity",
        x = "Max Latitude",
-       y = "Sensitivity") +
+       y = "Sensitivity (day/degree Celsius)") +
   theme_minimal()
 
 ## Sensitivity vs Latitudinal Range ####
@@ -57,31 +57,100 @@ range.lat.plot <- ggplot(analysis.data, aes(x = latitude_range, y = sensitivity)
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
   labs(title = "Scatterplot of Latitudinal Range vs. Sensitivity",
        x = "Latitudinal Range",
-       y = "Sensitivity") +
+       y = "Sensitivity (day/degree Celsius)") +
+  theme_minimal()
+
+## Sensitivity vs Mean Elevation ####
+mean.el.lm <- lm(sensitivity ~ mean_elevation, data = analysis.data)
+summary(mean.el.lm)
+
+# Create a scatterplot with points and the linear model
+mean.el.plot <- ggplot(analysis.data, aes(x = mean_elevation, y = sensitivity)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Mean Elevation vs. Sensitivity",
+       x = "Mean Elevation",
+       y = "Sensitivity (day/degree Celsius)") +
+  theme_minimal()
+
+## Sensitivity vs Max Elevation ####
+max.el.lm <- lm(sensitivity ~ max_elevation, data = analysis.data)
+summary(max.el.lm)
+
+# Create a scatterplot with points and the linear model
+max.el.plot <- ggplot(analysis.data, aes(x = max_elevation, y = sensitivity)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Max Elevation vs. Sensitivity",
+       x = "Max Elevation",
+       y = "Sensitivity (day/degree Celsius)") +
+  theme_minimal()
+
+## Sensitivity vs Min Elevation ####
+min.el.lm <- lm(sensitivity ~ min_elevation, data = analysis.data)
+summary(max.el.lm)
+
+# Create a scatterplot with points and the linear model
+min.el.plot <- ggplot(analysis.data, aes(x = min_elevation, y = sensitivity)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Min Elevation vs. Sensitivity",
+       x = "Min Elevation",
+       y = "Sensitivity (day/degree Celsius)") +
+  theme_minimal()
+
+## Sensitivity vs Elevation Range ####
+range.el.lm <- lm(sensitivity ~ elevation_range, data = analysis.data)
+summary(range.el.lm)
+
+# Create a scatterplot with points and the linear model
+range.el.plot <- ggplot(analysis.data, aes(x = elevation_range, y = sensitivity)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Elevational Range vs. Sensitivity",
+       x = "Elevation Range",
+       y = "Sensitivity (day/degree Celsius)") +
   theme_minimal()
 
 ## Saving Plots ####
-grid_plot <- plot_grid(mean.lat.plot, max.lat.plot, min.lat.plot, range.lat.plot,
+grid_plot_latitude <- plot_grid(mean.lat.plot, max.lat.plot, min.lat.plot, range.lat.plot,
                        label_size = 15, label_fontface = "bold")
+grid_plot_elevation <- plot_grid(mean.el.plot, max.el.plot, min.el.plot, range.el.plot,
+                                 label_size = 15, label_fontface = "bold")
 ggsave("figures/mean.latitude.png", plot = mean.lat.plot, bg = "white", width = 10, height = 6, units = "in")
 ggsave("figures/min.latitude.png", plot = min.lat.plot, bg = "white", width = 10, height = 6, units = "in")
 ggsave("figures/max.latitude.png", plot = max.lat.plot, bg = "white", width = 10, height = 6, units = "in")
 ggsave("figures/range.latitude.png", plot = range.lat.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/linear.models.png", plot = grid_plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/latitude.linear.models.png", plot = grid_plot_latitude, bg = "white", width = 10, height = 6, units = "in")
+
+ggsave("figures/mean.elevation.png", plot = mean.el.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/min.elevation.png", plot = min.el.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/max.elevation.png", plot = max.el.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/range.elevation.png", plot = range.el.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/elevation.linear.models.png", plot = grid_plot_elevation, bg = "white", width = 10, height = 6, units = "in")
 
 ## Saving Models ####
 # Extract coefficients from each linear model
-lm_coef_mean <- tidy(mean.lat.lm)
-lm_coef_max <- tidy(max.lat.lm)
-lm_coef_min <- tidy(min.lat.lm)
-lm_coefs_range <- tidy(range.lat.lm)
+lm_lat_coef_mean <- tidy(mean.lat.lm)
+lm_lat_coef_max <- tidy(max.lat.lm)
+lm_lat_coef_min <- tidy(min.lat.lm)
+lm_lat_coefs_range <- tidy(range.lat.lm)
 
 # Combine the coefficients into a single dataframe
-all_lm_coef <- bind_rows(lm_coef_mean, lm_coef_max, lm_coef_min, lm_coefs_range)
-kable_table <- kable(all_lm_coef, format = "markdown")
-html_table <- kable_styling(kable_table)
+lat_lm_coef <- bind_rows(lm_lat_coef_mean, lm_lat_coef_max, lm_lat_coef_min, lm_lat_coefs_range)
+lat_kable_table <- kable(lat_lm_coef, format = "markdown")
+lat_html_table <- kable_styling(lat_kable_table)
 # Totally failed to save or format this table nicely, just did it manually
 
+lm_el_coef_mean <- tidy(mean.el.lm)
+lm_el_coef_max <- tidy(max.el.lm)
+lm_el_coef_min <- tidy(min.el.lm)
+lm_el_coefs_range <- tidy(range.el.lm)
+
+# Combine the coefficients into a single dataframe
+el_lm_coef <- bind_rows(lm_el_coef_mean, lm_el_coef_max, lm_el_coef_min, lm_el_coefs_range)
+el_kable_table <- kable(el_lm_coef, format = "markdown")
+el_html_table <- kable_styling(el_kable_table)
 
 
 # Plan for group.data ####
@@ -212,6 +281,49 @@ for (variable in variables) {
 
   ggsave(paste0("figures/", variable, "_histogram.png"), plot = chart, bg = "white", width = 10, height = 6, units = "in")
 }
+
+# Scatterplot ####
+## Mean Annual Temp (for all groups, coloured) vs Year
+MAT.year.lm <- lm(Tave_Spring ~ Year, data = group.data)
+summary(MAT.year.lm)
+
+# Create a scatterplot with points and the linear model
+MAT.year.plot <- ggplot(group.data, aes(x = Year, y = Tave_Spring)) +
+  geom_point(aes(color = Species)) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Mean Spring Temperature vs. Year",
+       x = "Year",
+       y = "Mean Spring Temperature (degrees)") +
+  theme_minimal()
+
+## Mean Precipation (for all groups, coloured) vs Year
+MPPT.year.lm <- lm(PPT_Spring ~ Year, data = group.data)
+summary(MPPT.year.lm)
+
+MAT.year.plot <- ggplot(group.data, aes(x = Year, y = PPT_Spring, color = Species)) +
+  geom_point(aes(color = Species)) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Mean Spring Precipitation vs. Year",
+       x = "Year",
+       y = "Mean Spring Temperature (degrees)") +
+  theme_minimal()
+
+## Spring Anomaly vs Year
+STA.year.lm <- lm(Spring_T_Anomaly ~ Year, data = group.data)
+summary(STA.year.lm)
+
+anomaly.year.plot <- ggplot(group.data, aes(x = Year, y = Spring_T_Anomaly, color = Species)) +
+  geom_point(aes(color = Species)) +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  labs(title = "Scatterplot of Spring Temperature Anomaly vs. Year",
+       x = "Year",
+       y = "Spring Temperature Anomaly (degrees from historic)") +
+  theme_minimal()
+
+## LM of DOY over mean latitude and range
+
+## LM of DOY over mean elevation and range
+
 
 # ############ Old work from elias' file might be helpful later #################
 # # Some Preliminary Scatter Plots
