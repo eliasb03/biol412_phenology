@@ -498,6 +498,8 @@ model_info <- data.frame(
   Coefficients = character(),
   P_value = numeric(),
   Intercept = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
   stringsAsFactors = FALSE,
   row.names = NULL
 )
@@ -512,7 +514,9 @@ for (i in seq_along(lm_results)) {
     Formula = as.character(formula(model)),
     Coefficients = paste(coef(model), collapse = ", "),
     P_value = summary(model)$coefficients[2, "Pr(>|t|)"],
-    Intercept = coef(model)[1]
+    Intercept = coef(model)[1],
+    R_squared = summary(model)$r.squared,  # Extract R-squared
+    F_statistic = summary(model)$fstatistic[1]  # Extract F-statistic
   ))
 }
 
@@ -523,6 +527,8 @@ merged_model_info <- data.frame(
   Coefficient = character(),
   Intercept = character(),
   P_value = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
   stringsAsFactors = FALSE
 )
 
@@ -534,12 +540,16 @@ for (model_name in unique_models) {
   merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)  # Extracting intercept
   merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)  # Extracting coefficient
   merged_formula <- gsub("^~ ", "", merged_formula)  # Remove leading ~
+  merged_r_squared <- unique(subset_model_info$R_squared)  # Extract R-squared
+  merged_f_statistic <- unique(subset_model_info$F_statistic)  # Extract F-statistic
   merged_model_info <- rbind(merged_model_info, data.frame(
     Model = model_name,
     Formula = merged_formula,
     Coefficient = merged_coefficient,
     Intercept = merged_intercept,
-    P_value = merged_p_value
+    P_value = merged_p_value, 
+    R_squared = merged_r_squared,
+    F_statistic = merged_f_statistic
   ))
 }
 
@@ -547,7 +557,7 @@ for (model_name in unique_models) {
 results <- merged_model_info
 
 knitr::kable(results, format = "markdown")
-writeLines(kable(results, format = "markdown"), "temp_model_results.md")
+writeLines(kable(results, format = "markdown"), "models/temp_model_results.txt")
 
 
 # Create a scatterplot with points and the linear model
@@ -584,6 +594,8 @@ model_info <- data.frame(
   Formula = character(),
   Coefficients = character(),
   P_value = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
   Intercept = numeric(),
   stringsAsFactors = FALSE,
   row.names = NULL
@@ -599,7 +611,9 @@ for (i in seq_along(lm_results)) {
     Formula = as.character(formula(model)),
     Coefficients = paste(coef(model), collapse = ", "),
     P_value = summary(model)$coefficients[2, "Pr(>|t|)"],
-    Intercept = coef(model)[1]
+    Intercept = coef(model)[1],
+    R_squared = summary(model)$r.squared,  # Extract R-squared
+    F_statistic = summary(model)$fstatistic[1]  # Extract F-statistic
   ))
 }
 
@@ -610,6 +624,8 @@ merged_model_info <- data.frame(
   Coefficient = character(),
   Intercept = character(),
   P_value = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
   stringsAsFactors = FALSE
 )
 
@@ -621,12 +637,16 @@ for (model_name in unique_models) {
   merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)  # Extracting intercept
   merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)  # Extracting coefficient
   merged_formula <- gsub("^~ ", "", merged_formula)  # Remove leading ~
+  merged_r_squared <- unique(subset_model_info$R_squared)  # Extract R-squared
+  merged_f_statistic <- unique(subset_model_info$F_statistic)  # Extract F-statistic
   merged_model_info <- rbind(merged_model_info, data.frame(
     Model = model_name,
     Formula = merged_formula,
     Coefficient = merged_coefficient,
     Intercept = merged_intercept,
-    P_value = merged_p_value
+    P_value = merged_p_value,
+    R_squared = merged_r_squared,
+    F_statistic = merged_f_statistic
   ))
 }
 
@@ -634,7 +654,7 @@ for (model_name in unique_models) {
 results <- merged_model_info
 
 knitr::kable(results, format = "markdown")
-writeLines(kable(results, format = "markdown"), "precip_model_results.md")
+writeLines(kable(results, format = "markdown"), "models/precip_model_results.txt")
 
 
 MPPT.year.plot.spp <- ggplot(group.data, aes(x = Year, y = PPT_Spring, color = Species)) +
@@ -671,6 +691,8 @@ model_info <- data.frame(
   Coefficients = character(),
   P_value = numeric(),
   Intercept = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
   stringsAsFactors = FALSE,
   row.names = NULL
 )
@@ -685,7 +707,9 @@ for (i in seq_along(lm_results)) {
     Formula = as.character(formula(model)),
     Coefficients = paste(coef(model), collapse = ", "),
     P_value = summary(model)$coefficients[2, "Pr(>|t|)"],
-    Intercept = coef(model)[1]
+    Intercept = coef(model)[1],
+    R_squared = summary(model)$r.squared,  # Extract R-squared
+    F_statistic = summary(model)$fstatistic[1]  # Extract F-statistic
   ))
 }
 
@@ -696,6 +720,8 @@ merged_model_info <- data.frame(
   Coefficient = character(),
   Intercept = character(),
   P_value = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
   stringsAsFactors = FALSE
 )
 
@@ -707,12 +733,16 @@ for (model_name in unique_models) {
   merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)  # Extracting intercept
   merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)  # Extracting coefficient
   merged_formula <- gsub("^~ ", "", merged_formula)  # Remove leading ~
+  merged_r_squared <- unique(subset_model_info$R_squared)  # Extract R-squared
+  merged_f_statistic <- unique(subset_model_info$F_statistic)  # Extract F-statistic
   merged_model_info <- rbind(merged_model_info, data.frame(
     Model = model_name,
     Formula = merged_formula,
     Coefficient = merged_coefficient,
     Intercept = merged_intercept,
-    P_value = merged_p_value
+    P_value = merged_p_value,
+    R_squared = merged_r_squared,
+    F_statistic = merged_f_statistic
   ))
 }
 
@@ -721,7 +751,7 @@ results <- merged_model_info
 
 knitr::kable(results, format = "markdown")
 
-writeLines(kable(results, format = "markdown"), "anamoly_model_results.md")
+writeLines(kable(results, format = "markdown"), "models/anamoly_model_results.txt")
 
 
 anomaly.year.plot.spp <- ggplot(group.data, aes(x = Year, y = Spring_T_Anomaly, color = Species)) +
