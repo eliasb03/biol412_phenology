@@ -1,0 +1,6 @@
+|Model              |Formula                     |Coefficient          |Intercept         |   P_value| R_squared| F_statistic| DF_Model| DF_Residual|
+|:------------------|:---------------------------|:--------------------|:-----------------|---------:|---------:|-----------:|--------:|-----------:|
+|lm.mean_elevation  |sensitivity mean_elevation  |-0.00867643307520115 |6.61274795132793  | 0.0805914| 0.8453122|  10.9292647|        2|           2|
+|lm.max_elevation   |sensitivity max_elevation   |0.000174282806054793 |-3.17167261721266 | 0.9267137| 0.0053709|   0.0107998|        2|           2|
+|lm.min_elevation   |sensitivity min_elevation   |-0.036100820109882   |-2.11745173122447 | 0.7193351| 0.0787728|   0.1710171|        2|           2|
+|lm.elevation_range |sensitivity elevation_range |0.000181481910630645 |-3.18929250616029 | 0.9226131| 0.0059887|   0.0120496|        2|           2|

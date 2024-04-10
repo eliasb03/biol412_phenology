@@ -1,0 +1,6 @@
+|Model             |Formula                    |Coefficient        |Intercept         |   P_value| R_squared| F_statistic| DF_Model| DF_Residual|
+|:-----------------|:--------------------------|:------------------|:-----------------|---------:|---------:|-----------:|--------:|-----------:|
+|lm.mean_latitude  |sensitivity mean_latitude  |0.32119682091315   |-17.8602641229937 | 0.8852600| 0.0131653|   0.0266818|        2|           2|
+|lm.max_latitude   |sensitivity max_latitude   |-0.581542383195196 |28.735844401842   | 0.2553130| 0.5545587|   2.4899292|        2|           2|
+|lm.min_latitude   |sensitivity min_latitude   |3.13734471055973   |-134.500552686107 | 0.5393138| 0.2122318|   0.5388179|        2|           2|
+|lm.latitude_range |sensitivity latitude_range |-0.57474009276021  |4.21923819190345  | 0.2338724| 0.5869514|   2.8420456|        2|           2|

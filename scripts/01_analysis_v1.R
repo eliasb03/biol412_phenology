@@ -8,6 +8,7 @@
 # analysis.data - a 4 observation dataframe with latitude summaries and sensitivities 
 # group.data - a large dataframe with all of our group data bound together
 group.data$Species <- factor(group.data$Species, levels = c("adunca", "caudatum", "uniflora", "ovatum"))
+bs = 10
 # Analysis for analysis.data  ####
     #Linear models relating Latitude summaries to sensitivities
 ## Sensitivity vs Mean Latitude ####
@@ -17,11 +18,11 @@ summary(mean.lat.lm)
 # Create a scatterplot with points and the linear model
 mean.lat.plot <- ggplot(analysis.data, aes(x = mean_latitude, y = sensitivity)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Mean Latitude vs. Sensitivity",
-       x = "Mean Latitude",
+       x = "Mean Latitude (degree N)",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal(base_size = 20)
+  theme_minimal(base_size = bs)
 ## Sensitivity vs Min Latitude ####
 min.lat.lm <- lm(sensitivity ~ min_latitude, data = analysis.data)
 summary(min.lat.lm)
@@ -29,11 +30,11 @@ summary(min.lat.lm)
 # Create a scatterplot with points and the linear model
 min.lat.plot <- ggplot(analysis.data, aes(x = min_latitude, y = sensitivity)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Min Latitude vs. Sensitivity",
-       x = "Min Latitude",
+       x = "Min Latitude (degree N)",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal(base_size = 20)
+  theme_minimal(base_size = bs)
 ## Sensitivity vs Max Latitude ####
 max.lat.lm <- lm(sensitivity ~ max_latitude, data = analysis.data)
 summary(max.lat.lm)
@@ -41,11 +42,11 @@ summary(max.lat.lm)
 # Create a scatterplot with points and the linear model
 max.lat.plot <- ggplot(analysis.data, aes(x = max_latitude, y = sensitivity)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Max Latitude vs. Sensitivity",
-       x = "Max Latitude",
+       x = "Max Latitude (degree N)",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal(base_size = 20)
+  theme_minimal(base_size = bs)
 
 ## Sensitivity vs Latitudinal Range ####
 range.lat.lm <- lm(sensitivity ~ latitude_range, data = analysis.data)
@@ -54,11 +55,11 @@ summary(range.lat.lm)
 # Create a scatterplot with points and the linear model
 range.lat.plot <- ggplot(analysis.data, aes(x = latitude_range, y = sensitivity)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Latitudinal Range vs. Sensitivity",
-       x = "Latitudinal Range",
+       x = "Latitudinal Range (degree N)",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal(base_size = 20)
+  theme_minimal(base_size = bs)
 
 ## Sensitivity vs Mean Elevation ####
 mean.el.lm <- lm(sensitivity ~ mean_elevation, data = analysis.data)
@@ -67,11 +68,11 @@ summary(mean.el.lm)
 # Create a scatterplot with points and the linear model
 mean.el.plot <- ggplot(analysis.data, aes(x = mean_elevation, y = sensitivity)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Mean Elevation vs. Sensitivity",
-       x = "Mean Elevation",
+       x = "Mean Elevation (m)",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal(base_size = 20)
+  theme_minimal(base_size = bs)
 
 ## Sensitivity vs Max Elevation ####
 max.el.lm <- lm(sensitivity ~ max_elevation, data = analysis.data)
@@ -80,11 +81,11 @@ summary(max.el.lm)
 # Create a scatterplot with points and the linear model
 max.el.plot <- ggplot(analysis.data, aes(x = max_elevation, y = sensitivity)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Max Elevation vs. Sensitivity",
-       x = "Max Elevation",
+       x = "Max Elevation (m)",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal(base_size = 20)
+  theme_minimal(base_size = bs)
 
 ## Sensitivity vs Min Elevation ####
 min.el.lm <- lm(sensitivity ~ min_elevation, data = analysis.data)
@@ -93,11 +94,11 @@ summary(max.el.lm)
 # Create a scatterplot with points and the linear model
 min.el.plot <- ggplot(analysis.data, aes(x = min_elevation, y = sensitivity)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Min Elevation vs. Sensitivity",
-       x = "Min Elevation",
+       x = "Min Elevation (m)",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal(base_size = 20)
+  theme_minimal(base_size = bs)
 
 ## Sensitivity vs Elevation Range ####
 range.el.lm <- lm(sensitivity ~ elevation_range, data = analysis.data)
@@ -106,29 +107,133 @@ summary(range.el.lm)
 # Create a scatterplot with points and the linear model
 range.el.plot <- ggplot(analysis.data, aes(x = elevation_range, y = sensitivity)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Elevational Range vs. Sensitivity",
-       x = "Elevation Range",
+       x = "Elevation Range (m)",
        y = "Sensitivity (day/degree Celsius)") +
-  theme_minimal(base_size = 20)
+  theme_minimal(base_size = bs)
 
 ## Saving Plots ####
-grid_plot_latitude <- plot_grid(mean.lat.plot, max.lat.plot, min.lat.plot, range.lat.plot,
-                       label_size = 15, label_fontface = "bold")
-grid_plot_elevation <- plot_grid(mean.el.plot, max.el.plot, min.el.plot, range.el.plot,
-                                 label_size = 15, label_fontface = "bold")
-ggsave("figures/mean.latitude.png", plot = mean.lat.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/min.latitude.png", plot = min.lat.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/max.latitude.png", plot = max.lat.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/range.latitude.png", plot = range.lat.plot, bg = "white", width = 10, height = 6, units = "in")
+grid_plot_latitude <- plot_grid(mean.lat.plot, max.lat.plot, min.lat.plot, range.lat.plot, labels = c("A: Mean", "B: Max", "C: Minimum", "D: Range"), label_size = 15, label_fontface = "bold")
+grid_plot_elevation <- plot_grid(mean.el.plot, max.el.plot, min.el.plot, range.el.plot, labels = c("A: Mean", "B: Max", "C: Minimum", "D: Range"), label_size = 15, label_fontface = "bold")
+
+ggsave("figures/mean.latitude.png", plot = mean.lat.plot, bg = "white", width = 8, height = 6, units = "in")
+ggsave("figures/min.latitude.png", plot = min.lat.plot, bg = "white", width = 8, height = 6, units = "in")
+ggsave("figures/max.latitude.png", plot = max.lat.plot, bg = "white", width = 8, height = 6, units = "in")
+ggsave("figures/range.latitude.png", plot = range.lat.plot, bg = "white", width = 8, height = 6, units = "in")
 ggsave("figures/latitude.linear.models.png", plot = grid_plot_latitude, bg = "white", width = 10, height = 6, units = "in")
 
-ggsave("figures/mean.elevation.png", plot = mean.el.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/min.elevation.png", plot = min.el.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/max.elevation.png", plot = max.el.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/range.elevation.png", plot = range.el.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/mean.elevation.png", plot = mean.el.plot, bg = "white", width = 8, height = 6, units = "in")
+ggsave("figures/min.elevation.png", plot = min.el.plot, bg = "white", width = 8, height = 6, units = "in")
+ggsave("figures/max.elevation.png", plot = max.el.plot, bg = "white", width = 8, height = 6, units = "in")
+ggsave("figures/range.elevation.png", plot = range.el.plot, bg = "white", width = 8, height = 6, units = "in")
 ggsave("figures/elevation.linear.models.png", plot = grid_plot_elevation, bg = "white", width = 10, height = 6, units = "in")
+# Trying to save model table better #####
+lm_results <- list()
 
+# Loop through each unique species
+y_metrics <- c("mean_latitude", "max_latitude", "min", "range")
+unique_species <- unique(group.data$Species)
+
+for (ym in y_metrics) {
+  # Create linear model
+  lm_name <- paste("lm.", ym, sep = "")
+  lm_model <- lm(DOY ~ Latitude, data = analysis.data)
+  
+  # Store linear model result
+  lm_results[[lm_name]] <- lm_model
+}
+
+
+# Create empty data frame to store model information
+model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficients = character(),
+  P_value = numeric(),
+  Intercept = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
+  DF_Model = numeric(), # Degrees of freedom for the model
+  DF_Residual = numeric(), # Degrees of freedom for residuals
+  stringsAsFactors = FALSE,
+  row.names = NULL
+)
+
+# Populate model information
+for (i in seq_along(lm_results)) {
+  model_name <- (names(lm_results))[i]
+  model <- lm_results[[i]]
+  
+  model_summary <- summary(model)
+  
+  model_info <- rbind(model_info, data.frame(
+    Model = model_name,
+    Formula = as.character(formula(model)),
+    Coefficients = paste(coef(model), collapse = ", "),
+    P_value = model_summary$coefficients[2, "Pr(>|t|)"],
+    Intercept = coef(model)[1],
+    R_squared = model_summary$r.squared,
+    F_statistic = model_summary$fstatistic[1],
+    DF_Model = model_summary$df[1], # Degrees of freedom for the model
+    DF_Residual = model_summary$df[2] # Degrees of freedom for residuals
+  ))
+}
+
+# Get unique model names
+unique_models <- unique(model_info$Model)
+
+# Create an empty data frame to store merged model information
+merged_model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficient = character(),
+  Intercept = character(),
+  P_value = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
+  DF_Model = numeric(), # Degrees of freedom for the model
+  DF_Residual = numeric(), # Degrees of freedom for residuals
+  stringsAsFactors = FALSE
+)
+
+# Loop through unique model names
+for (model_name in unique_models) {
+  # Subset model information for the current model
+  subset_model_info <- subset(model_info, Model == model_name)
+  
+  # Merge formula, coefficients, and other information for the current model
+  merged_formula <- paste(unique(subset_model_info$Formula), collapse = " ")
+  merged_coefficients <- unique(subset_model_info$Coefficients)
+  merged_p_value <- unique(subset_model_info$P_value)
+  merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)
+  merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)
+  merged_formula <- gsub("^~ ", "", merged_formula)
+  merged_r_squared <- unique(subset_model_info$R_squared)
+  merged_f_statistic <- unique(subset_model_info$F_statistic)
+  merged_df_model <- unique(subset_model_info$DF_Model) # Degrees of freedom for the model
+  merged_df_residual <- unique(subset_model_info$DF_Residual) # Degrees of freedom for residuals
+  
+  # Append merged model information to the data frame
+  merged_model_info <- rbind(merged_model_info, data.frame(
+    Model = model_name,
+    Formula = merged_formula,
+    Coefficient = merged_coefficient,
+    Intercept = merged_intercept,
+    P_value = merged_p_value,
+    R_squared = merged_r_squared,
+    F_statistic = merged_f_statistic,
+    DF_Model = merged_df_model,
+    DF_Residual = merged_df_residual
+  ))
+}
+
+
+results <- merged_model_info
+
+knitr::kable(results, format = "markdown")
+writeLines(kable(results, format = "markdown"), "models/doy_latitude_results.txt")
+#####
 ## Saving Models ####
 # Extract coefficients from each linear model
 lm_lat_coef_mean <- tidy(mean.lat.lm)
@@ -321,9 +426,9 @@ anomaly.year.plot <- ggplot(group.data, aes(x = Year, y = Spring_T_Anomaly)) +
   theme_minimal(base_size = 20)
 
 # Saving Plots
-ggsave("figures/MAT.year.png", plot = MAT.year.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/MPPT.year.png", plot = MPPT.year.plot, bg = "white", width = 10, height = 6, units = "in")
-ggsave("figures/anomaly.year.png", plot = anomaly.year.plot, bg = "white", width = 10, height = 6, units = "in")
+ggsave("figures/MAT.year.png", plot = MAT.year.plot, bg = "white", width = 8, height = 7, units = "in")
+ggsave("figures/MPPT.year.png", plot = MPPT.year.plot, bg = "white", width = 8, height = 7, units = "in")
+ggsave("figures/anomaly.year.png", plot = anomaly.year.plot, bg = "white", width = 8, height = 7, units = "in")
 
 ## Saving Models ####
 # Extract coefficients from each linear model
@@ -382,7 +487,110 @@ combined_plot <- cowplot::plot_grid(plotlist = plot_list,
 # Save the combined plot
 filename_combined <- "figures/doy_latitude_plots.png"
 ggsave(filename_combined, combined_plot, width = 12, height = 8)
+# DOY latitude Table #####
+lm_results <- list()
 
+# Loop through each unique species
+unique_species <- unique(group.data$Species)
+for (species in unique_species) {
+  # Create linear model
+  lm_name <- paste("MAT.year.", species, sep = "")
+  lm_model <- lm(DOY ~ Latitude, data = filter(group.data, Species == species))
+  
+  # Store linear model result
+  lm_results[[lm_name]] <- lm_model
+}
+
+
+# Create empty data frame to store model information
+model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficients = character(),
+  P_value = numeric(),
+  Intercept = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
+  DF_Model = numeric(), # Degrees of freedom for the model
+  DF_Residual = numeric(), # Degrees of freedom for residuals
+  stringsAsFactors = FALSE,
+  row.names = NULL
+)
+
+# Populate model information
+for (i in seq_along(lm_results)) {
+  model_name <- (names(lm_results))[i]
+  model <- lm_results[[i]]
+  
+  model_summary <- summary(model)
+  
+  model_info <- rbind(model_info, data.frame(
+    Model = model_name,
+    Formula = as.character(formula(model)),
+    Coefficients = paste(coef(model), collapse = ", "),
+    P_value = model_summary$coefficients[2, "Pr(>|t|)"],
+    Intercept = coef(model)[1],
+    R_squared = model_summary$r.squared,
+    F_statistic = model_summary$fstatistic[1],
+    DF_Model = model_summary$df[1], # Degrees of freedom for the model
+    DF_Residual = model_summary$df[2] # Degrees of freedom for residuals
+  ))
+}
+
+# Get unique model names
+unique_models <- unique(model_info$Model)
+
+# Create an empty data frame to store merged model information
+merged_model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficient = character(),
+  Intercept = character(),
+  P_value = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
+  DF_Model = numeric(), # Degrees of freedom for the model
+  DF_Residual = numeric(), # Degrees of freedom for residuals
+  stringsAsFactors = FALSE
+)
+
+# Loop through unique model names
+for (model_name in unique_models) {
+  # Subset model information for the current model
+  subset_model_info <- subset(model_info, Model == model_name)
+  
+  # Merge formula, coefficients, and other information for the current model
+  merged_formula <- paste(unique(subset_model_info$Formula), collapse = " ")
+  merged_coefficients <- unique(subset_model_info$Coefficients)
+  merged_p_value <- unique(subset_model_info$P_value)
+  merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)
+  merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)
+  merged_formula <- gsub("^~ ", "", merged_formula)
+  merged_r_squared <- unique(subset_model_info$R_squared)
+  merged_f_statistic <- unique(subset_model_info$F_statistic)
+  merged_df_model <- unique(subset_model_info$DF_Model) # Degrees of freedom for the model
+  merged_df_residual <- unique(subset_model_info$DF_Residual) # Degrees of freedom for residuals
+  
+  # Append merged model information to the data frame
+  merged_model_info <- rbind(merged_model_info, data.frame(
+    Model = model_name,
+    Formula = merged_formula,
+    Coefficient = merged_coefficient,
+    Intercept = merged_intercept,
+    P_value = merged_p_value,
+    R_squared = merged_r_squared,
+    F_statistic = merged_f_statistic,
+    DF_Model = merged_df_model,
+    DF_Residual = merged_df_residual
+  ))
+}
+
+
+results <- merged_model_info
+
+knitr::kable(results, format = "markdown")
+writeLines(kable(results, format = "markdown"), "models/doy_latitude_results.txt")
+#####
 
 ## LM of DOY over spring temp anomaly
 plot_list <- list()
@@ -428,6 +636,110 @@ combined_plot <- cowplot::plot_grid(plotlist = plot_list,
 # Save the combined plot
 filename_combined <- "figures/doy_anomaly_plots.png"
 ggsave(filename_combined, combined_plot, width = 12, height = 8)
+# DOY anomaly Table #####
+lm_results <- list()
+
+# Loop through each unique species
+unique_species <- unique(group.data$Species)
+for (species in unique_species) {
+  # Create linear model
+  lm_name <- paste("MAT.year.", species, sep = "")
+  lm_model <- lm(DOY ~ Spring_T_Anomaly, data = filter(group.data, Species == species))
+  
+  # Store linear model result
+  lm_results[[lm_name]] <- lm_model
+}
+
+
+# Create empty data frame to store model information
+model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficients = character(),
+  P_value = numeric(),
+  Intercept = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
+  DF_Model = numeric(), # Degrees of freedom for the model
+  DF_Residual = numeric(), # Degrees of freedom for residuals
+  stringsAsFactors = FALSE,
+  row.names = NULL
+)
+
+# Populate model information
+for (i in seq_along(lm_results)) {
+  model_name <- (names(lm_results))[i]
+  model <- lm_results[[i]]
+  
+  model_summary <- summary(model)
+  
+  model_info <- rbind(model_info, data.frame(
+    Model = model_name,
+    Formula = as.character(formula(model)),
+    Coefficients = paste(coef(model), collapse = ", "),
+    P_value = model_summary$coefficients[2, "Pr(>|t|)"],
+    Intercept = coef(model)[1],
+    R_squared = model_summary$r.squared,
+    F_statistic = model_summary$fstatistic[1],
+    DF_Model = model_summary$df[1], # Degrees of freedom for the model
+    DF_Residual = model_summary$df[2] # Degrees of freedom for residuals
+  ))
+}
+
+# Get unique model names
+unique_models <- unique(model_info$Model)
+
+# Create an empty data frame to store merged model information
+merged_model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficient = character(),
+  Intercept = character(),
+  P_value = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
+  DF_Model = numeric(), # Degrees of freedom for the model
+  DF_Residual = numeric(), # Degrees of freedom for residuals
+  stringsAsFactors = FALSE
+)
+
+# Loop through unique model names
+for (model_name in unique_models) {
+  # Subset model information for the current model
+  subset_model_info <- subset(model_info, Model == model_name)
+  
+  # Merge formula, coefficients, and other information for the current model
+  merged_formula <- paste(unique(subset_model_info$Formula), collapse = " ")
+  merged_coefficients <- unique(subset_model_info$Coefficients)
+  merged_p_value <- unique(subset_model_info$P_value)
+  merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)
+  merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)
+  merged_formula <- gsub("^~ ", "", merged_formula)
+  merged_r_squared <- unique(subset_model_info$R_squared)
+  merged_f_statistic <- unique(subset_model_info$F_statistic)
+  merged_df_model <- unique(subset_model_info$DF_Model) # Degrees of freedom for the model
+  merged_df_residual <- unique(subset_model_info$DF_Residual) # Degrees of freedom for residuals
+  
+  # Append merged model information to the data frame
+  merged_model_info <- rbind(merged_model_info, data.frame(
+    Model = model_name,
+    Formula = merged_formula,
+    Coefficient = merged_coefficient,
+    Intercept = merged_intercept,
+    P_value = merged_p_value,
+    R_squared = merged_r_squared,
+    F_statistic = merged_f_statistic,
+    DF_Model = merged_df_model,
+    DF_Residual = merged_df_residual
+  ))
+}
+
+
+results <- merged_model_info
+
+knitr::kable(results, format = "markdown")
+writeLines(kable(results, format = "markdown"), "models/doy_anomaly_results.txt")
+#####
 
 ## LM of DOY over elevation and range
 plot_list <- list()
@@ -466,7 +778,110 @@ combined_plot <- cowplot::plot_grid(plotlist = plot_list,
 # Save the combined plot
 filename_combined <- "figures/doy_elevation_plots.png"
 ggsave(filename_combined, combined_plot, width = 12, height = 8)
+# DOY Elevation Table #####
+lm_results <- list()
 
+# Loop through each unique species
+unique_species <- unique(group.data$Species)
+for (species in unique_species) {
+  # Create linear model
+  lm_name <- paste("MAT.year.", species, sep = "")
+  lm_model <- lm(DOY ~ Elevation_m, data = filter(group.data, Species == species))
+  
+  # Store linear model result
+  lm_results[[lm_name]] <- lm_model
+}
+
+
+# Create empty data frame to store model information
+model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficients = character(),
+  P_value = numeric(),
+  Intercept = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
+  DF_Model = numeric(), # Degrees of freedom for the model
+  DF_Residual = numeric(), # Degrees of freedom for residuals
+  stringsAsFactors = FALSE,
+  row.names = NULL
+)
+
+# Populate model information
+for (i in seq_along(lm_results)) {
+  model_name <- (names(lm_results))[i]
+  model <- lm_results[[i]]
+  
+  model_summary <- summary(model)
+  
+  model_info <- rbind(model_info, data.frame(
+    Model = model_name,
+    Formula = as.character(formula(model)),
+    Coefficients = paste(coef(model), collapse = ", "),
+    P_value = model_summary$coefficients[2, "Pr(>|t|)"],
+    Intercept = coef(model)[1],
+    R_squared = model_summary$r.squared,
+    F_statistic = model_summary$fstatistic[1],
+    DF_Model = model_summary$df[1], # Degrees of freedom for the model
+    DF_Residual = model_summary$df[2] # Degrees of freedom for residuals
+  ))
+}
+
+# Get unique model names
+unique_models <- unique(model_info$Model)
+
+# Create an empty data frame to store merged model information
+merged_model_info <- data.frame(
+  Model = character(),
+  Formula = character(),
+  Coefficient = character(),
+  Intercept = character(),
+  P_value = numeric(),
+  R_squared = numeric(), 
+  F_statistic = numeric(),
+  DF_Model = numeric(), # Degrees of freedom for the model
+  DF_Residual = numeric(), # Degrees of freedom for residuals
+  stringsAsFactors = FALSE
+)
+
+# Loop through unique model names
+for (model_name in unique_models) {
+  # Subset model information for the current model
+  subset_model_info <- subset(model_info, Model == model_name)
+  
+  # Merge formula, coefficients, and other information for the current model
+  merged_formula <- paste(unique(subset_model_info$Formula), collapse = " ")
+  merged_coefficients <- unique(subset_model_info$Coefficients)
+  merged_p_value <- unique(subset_model_info$P_value)
+  merged_intercept <- gsub("(.+), (.+)", "\\1", merged_coefficients)
+  merged_coefficient <- gsub("(.+), (.+)", "\\2", merged_coefficients)
+  merged_formula <- gsub("^~ ", "", merged_formula)
+  merged_r_squared <- unique(subset_model_info$R_squared)
+  merged_f_statistic <- unique(subset_model_info$F_statistic)
+  merged_df_model <- unique(subset_model_info$DF_Model) # Degrees of freedom for the model
+  merged_df_residual <- unique(subset_model_info$DF_Residual) # Degrees of freedom for residuals
+  
+  # Append merged model information to the data frame
+  merged_model_info <- rbind(merged_model_info, data.frame(
+    Model = model_name,
+    Formula = merged_formula,
+    Coefficient = merged_coefficient,
+    Intercept = merged_intercept,
+    P_value = merged_p_value,
+    R_squared = merged_r_squared,
+    F_statistic = merged_f_statistic,
+    DF_Model = merged_df_model,
+    DF_Residual = merged_df_residual
+  ))
+}
+
+
+results <- merged_model_info
+
+knitr::kable(results, format = "markdown")
+writeLines(kable(results, format = "markdown"), "models/doy_elevation_results.txt")
+#####
 # Saving Linear Models ####
 # Function to generate formatted output for linear models
 generate_lm_output <- function(model) {
@@ -994,7 +1409,7 @@ knitr::kable(results, format = "markdown")
 writeLines(kable(results, format = "markdown"), "models/doy_year_model_results.txt")
 
 
-doy.year.plot.spp <- ggplot(group.data, aes(x = Year, y = Spring_T_Anomaly, color = Species)) +
+doy.year.plot.spp <- ggplot(group.data, aes(x = Year, y = DOY, color = Species)) +
   #geom_point(alpha = 0.45, size = 0.5) +
   geom_smooth(method = "lm", formula = y ~ x, se = TRUE) +
   labs(#title = "Scatterplot of Spring Temperature Anomaly vs. Year",
